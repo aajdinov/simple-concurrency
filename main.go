@@ -34,6 +34,7 @@ func main() {
 	}
 
 	wg.Wait()
+	Channels()
 }
 
 func queryCache(id int, m *sync.RWMutex) (Book, bool) {
