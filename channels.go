@@ -15,20 +15,18 @@ func Channels() {
 	wg.Add(2)
 
 	go func(ch <-chan int, wg *sync.WaitGroup) {
-		if msg, ok := <-ch; ok {
+		for msg := range ch {
 			fmt.Printf("Random 2 digit integer: %d\n", msg)
-			wg.Done()
-			return
 		}
-
-		fmt.Println("Channel closed")
 		wg.Done()
 	}(ch, wg)
 
 	go func(ch chan<- int, wg *sync.WaitGroup) {
 		min := 10
 		max := 99
-		ch <- rand.Intn(max-min+1) + min
+		for i := 0; i < 10; i++ {
+			ch <- rand.Intn(max-min+1) + min
+		}
 		close(ch)
 		wg.Done()
 	}(ch, wg)
